@@ -8,6 +8,24 @@ use Illuminate\Support\Facades\Validator;
 
 class TransaksiController extends Controller
 {
+    public function show()
+    {
+        $data_transaksi = Transaksi::join('orders','transaksi.id_orders','orders.id')->get();
+        return Response()->json($data_transaksi);
+    }
+    public function detail($id)
+    {
+        if(Siswa::where('id', $id)->exists()) {
+            $data_transaksi = Transaksi::join('orders', 'orders.id_orders', 'transaksi.id_orders')
+                                ->where('transaksi.id', '=', $id)
+                                ->get();
+
+            return Response()->json($data_transaksi);
+        }
+        else {
+            return Response()->json(['message' => 'Tidak ditemukan' ]);
+        }
+    }
     public function store(Request $request)     
     { 
         $validator=Validator::make($request->all(),             

@@ -1,4 +1,5 @@
-<?php
+
+\<?php
 
 namespace App\Http\Controllers;
 
@@ -8,6 +9,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CustomersController extends Controller
 {
+    public function show()
+    {
+    return Customers::all();
+    }
     public function store(Request $request)     
     { 
         $validator=Validator::make($request->all(),             
