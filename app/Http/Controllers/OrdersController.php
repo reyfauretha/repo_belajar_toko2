@@ -56,5 +56,31 @@ class OrdersController extends Controller
         else {             
             return Response()->json(['status'=>0]);         
         }     
+    }
+    public function update($id, Request $request)
+    {
+        $validator=Validator::make($request->all(),
+        [
+                'tanggal' => 'required',
+                'jumlah' => 'required', 
+                'id_customers' => 'required',
+                'id_product' => 'required'  
+        ]
+    );
+        if($validator->fails()) {
+            return Response()->json($validator->errors());
+    }
+        $ubah = Orders::where('id_orders', $id)->update([
+                'tanggal' => $request->tanggal,
+                'jumlah' => $request->jumlah,
+                'id_customers' => $request->id_customers,
+                'id_product' => $request->id_product  
+        ]);
+        if($ubah) {
+            return Response()->json(['status' => 1]);
+        }
+        else {
+            return Response()->json(['status' => 0]);
+        }
     } 
 }
