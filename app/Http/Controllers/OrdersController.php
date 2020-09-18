@@ -65,22 +65,34 @@ class OrdersController extends Controller
                 'jumlah' => 'required', 
                 'id_customers' => 'required',
                 'id_product' => 'required'  
-        ]
-    );
-        if($validator->fails()) {
-            return Response()->json($validator->errors());
+            ]
+        );
+            if($validator->fails()) {
+                return Response()->json($validator->errors());
+        }
+            $ubah = Orders::where('id_orders', $id)->update([
+                    'tanggal' => $request->tanggal,
+                    'jumlah' => $request->jumlah,
+                    'id_customers' => $request->id_customers,
+                    'id_product' => $request->id_product  
+            ]);
+            if($ubah) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+        }
     }
-        $ubah = Orders::where('id_orders', $id)->update([
-                'tanggal' => $request->tanggal,
-                'jumlah' => $request->jumlah,
-                'id_customers' => $request->id_customers,
-                'id_product' => $request->id_product  
-        ]);
-        if($ubah) {
-            return Response()->json(['status' => 1]);
+
+        public function destroy($id)
+        {
+            $hapus = Orders::where('id_orders', $id)->delete();
+            if($hapus) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
         }
-        else {
-            return Response()->json(['status' => 0]);
-        }
-    } 
+    
 }

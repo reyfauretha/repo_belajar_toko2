@@ -48,20 +48,32 @@ class CustomersController extends Controller
                 'umur' => 'required',
                 'alamat' => 'required'  
             ]
-        );
-        if($validator->fails()) {
-            return Response()->json($validator->errors());
-        }
-        $ubah = Customers::where('id_customers', $id)->update([
-                'nama_customers' => $request->nama_customers,
-                'umur' => $request->umur,
-                'alamat' => $request->alamat
-        ]);
-        if($ubah) {
-            return Response()->json(['status' => 1]);
-        }
-        else {
-        return Response()->json(['status' => 0]);
+            );
+            if($validator->fails()) {
+                return Response()->json($validator->errors());
+            }
+            $ubah = Customers::where('id_customers', $id)->update([
+                    'nama_customers' => $request->nama_customers,
+                    'umur' => $request->umur,
+                    'alamat' => $request->alamat
+            ]);
+            if($ubah) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+            return Response()->json(['status' => 0]);
         }
     }
+
+        public function destroy($id)
+        {
+            $hapus = Customers::where('id_customers', $id)->delete();
+            if($hapus) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
+        }
+    
 }

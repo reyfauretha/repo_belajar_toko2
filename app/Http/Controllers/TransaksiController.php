@@ -54,23 +54,36 @@ class TransaksiController extends Controller
     public function update($id, Request $request)
     {
         $validator=Validator::make($request->all(),
-            [
-                'total_harga' => 'required',
-                'id_orders' => 'required'
-            ]
-        );
-        if($validator->fails()) {
-            return Response()->json($validator->errors());
-        }
-        $ubah = Transaksi::where('id_transaksi', $id)->update([
-                'total_harga' => $request->total_harga,
-                'id_orders' => $request->id_orders 
-        ]);
-        if($ubah) {
-            return Response()->json(['status' => 1]);
-        }
-        else {
-            return Response()->json(['status' => 0]);
-        }
+                [
+                    'total_harga' => 'required',
+                    'id_orders' => 'required'
+                ]
+            );
+            
+            if($validator->fails()) {
+                return Response()->json($validator->errors());
+            }
+            $ubah = Transaksi::where('id_transaksi', $id)->update([
+                    'total_harga' => $request->total_harga,
+                    'id_orders' => $request->id_orders 
+            ]);
+            if($ubah) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
     }
+
+        public function destroy($id)
+        {
+            $hapus = Transaksi::where('id_transaksi', $id)->delete();
+            if($hapus) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
+        }
+    
 }

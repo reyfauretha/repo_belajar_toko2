@@ -48,19 +48,31 @@ class ProductController extends Controller
                 'harga' => 'required' 
             ]
         );
-        if($validator->fails()) {
-            return Response()->json($validator->errors());
+            if($validator->fails()) {
+                return Response()->json($validator->errors());
+            }
+            $ubah = Product::where('id_product', $id)->update([
+                    'nama' => $request->nama,
+                    'stok' => $request->stok, 
+                    'harga' => $request->harga 
+            ]);
+            if($ubah) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
         }
-        $ubah = Product::where('id_product', $id)->update([
-                'nama' => $request->nama,
-                'stok' => $request->stok, 
-                'harga' => $request->harga 
-        ]);
-        if($ubah) {
-            return Response()->json(['status' => 1]);
-        }
-        else {
-            return Response()->json(['status' => 0]);
-       }
     }
+
+       public function destroy($id)
+       {
+            $hapus = Product::where('id_product', $id)->delete();
+            if($hapus) {
+                return Response()->json(['status' => 1]);
+            }
+            else {
+                return Response()->json(['status' => 0]);
+            }
+        }
+    
 }
